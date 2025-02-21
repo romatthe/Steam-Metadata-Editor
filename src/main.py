@@ -22,24 +22,27 @@
 #   https://github.com/tralph3   #
 #                                #
 ##################################
+import os
+from hashlib import sha1
 
-from tkinter import messagebox
-
-from config import config
-from gui.main_window import MainWindow
-from appinfo import IncompatibleVDFError
+from appinfo import IncompatibleVDFError, Appinfo
 
 
 def main():
-    try:
-        main_window = MainWindow()
-        if not config.silent and config.export is None:
-            main_window.window.mainloop()
-    except IncompatibleVDFError as e:
-        messagebox.showerror(
-            title="Invalid VDF Version",
-            message=f"VDF version {e.vdf_version:#08x} is not supported.",
-        )
+    path = os.path.join(
+        "/home/romatthe/Source/sme-rs/", "appinfo_duplicated.vdf"
+    )
+    appinfo = Appinfo(
+        path, False, None
+    )
+
+    app = appinfo.parsedAppInfo[1325200]
+    formatted = appinfo.dict_to_text_vdf(app["sections"])
+    print(list(app['checksum_text']))
+    print(app['checksum_text'].hex())
+    print(list(sha1(formatted).digest()))
+    print(sha1(formatted).hexdigest())
+    print(formatted.decode())
 
 
 if __name__ == "__main__":

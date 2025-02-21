@@ -79,6 +79,7 @@ class Appinfo:
             string = string.decode("utf-8")
         except UnicodeDecodeError:
             string = string.decode("latin-1")
+            print(string)
         self.offset += str_end - self.offset + 1
         return string
 
